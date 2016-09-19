@@ -1,0 +1,28 @@
+<h2>Listing uploads</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Description</th>
+      <th>Files</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for upload <- @uploads do %>
+    <tr>
+      <td><%= upload.description %></td>
+      <td><%= upload.files %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: upload_path(@conn, :show, upload), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: upload_path(@conn, :edit, upload), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: upload_path(@conn, :delete, upload), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New upload", to: upload_path(@conn, :new) %>
