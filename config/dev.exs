@@ -41,3 +41,6 @@ config :klausurenarchiv, Klausurenarchiv.Repo,
   database: "klausurenarchiv_dev",
   hostname: "localhost",
   pool_size: 10
+
+config :klausurenarchiv, :store,
+  path: "/Users/Mathis/Desktop/Klausurenarchiv"

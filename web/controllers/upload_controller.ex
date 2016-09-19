@@ -14,16 +14,7 @@ defmodule Klausurenarchiv.UploadController do
   end
 
   def create(conn, %{"upload" => upload_params}) do
-    filepath =
-      if file = upload_params["file"] do
-        dest = "/Users/Mathis/Desktop/Klausurenarchiv/#{file.filename}"
-        case cp_p(file.path, dest) do
-          :ok -> dest
-          _ -> nil
-        end
-      else
-        nil
-      end
+    filepath = save_file_from_upload(upload_params)
     upload = Map.put(upload_params, "files", [filepath])
     changeset = Upload.changeset(%Upload{}, upload)
 
@@ -74,6 +65,19 @@ defmodule Klausurenarchiv.UploadController do
     conn
     |> put_flash(:info, "Upload deleted successfully.")
     |> redirect(to: upload_path(conn, :index))
+  end
+
+  defp save_file_from_upload(upload_params) do
+    if file = upload_params["file"] do
+      basepath = Application.get_env(:klausurenarchiv, :store)[:path]
+      dest = Path.join(basepath, file.filename)
+      case cp_p(file.path, dest) do
+        :ok -> dest
+        _ -> nil
+      end
+    else
+      nil
+    end
   end
 
   # Works like `File.cp` with the addition that it creates
