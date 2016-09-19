@@ -14,7 +14,18 @@ defmodule Klausurenarchiv.UploadController do
   end
 
   def create(conn, %{"upload" => upload_params}) do
-    changeset = Upload.changeset(%Upload{}, upload_params)
+    filepath =
+      if file = upload_params["file"] do
+        dest = "/Users/Mathis/Desktop/Klausurenarchiv/#{file.filename}"
+        case cp_p(file.path, dest) do
+          :ok -> dest
+          _ -> nil
+        end
+      else
+        nil
+      end
+    upload = Map.put(upload_params, "files", [filepath])
+    changeset = Upload.changeset(%Upload{}, upload)
 
     case Repo.insert(changeset) do
       {:ok, _upload} ->
@@ -28,7 +39,7 @@ defmodule Klausurenarchiv.UploadController do
 
   def show(conn, %{"id" => id}) do
     upload = Repo.get!(Upload, id)
-    render(conn, "show.html", upload: upload)
+    Plug.Conn.send_file(conn, 200, hd upload.files)
   end
 
   def edit(conn, %{"id" => id}) do
@@ -54,6 +65,8 @@ defmodule Klausurenarchiv.UploadController do
   def delete(conn, %{"id" => id}) do
     upload = Repo.get!(Upload, id)
 
+    File.rm(hd upload.files)
+
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
     Repo.delete!(upload)
@@ -62,4 +75,12 @@ defmodule Klausurenarchiv.UploadController do
     |> put_flash(:info, "Upload deleted successfully.")
     |> redirect(to: upload_path(conn, :index))
   end
+
+  # Works like `File.cp` with the addition that it creates
+  # missing parent directories.
+  defp cp_p(source, destination) do
+    with :ok <- File.mkdir_p(Path.dirname(destination)),
+         :ok <- File.cp(source, destination), do: :ok
+  end
+
 end

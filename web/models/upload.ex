@@ -14,6 +14,6 @@ defmodule Klausurenarchiv.Upload do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:description, :files])
-    |> validate_required([:description, :files])
+    |> validate_required([:description])
   end
 end
