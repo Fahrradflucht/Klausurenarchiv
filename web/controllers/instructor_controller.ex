@@ -5,7 +5,10 @@ defmodule Klausurenarchiv.InstructorController do
   alias Klausurenarchiv.Instructor
 
   def index(conn, _params) do
-    instructors = Repo.all(Instructor)
+    instructors = 
+      conn.assigns[:course]
+      |> assoc(:instructors)
+      |> Repo.all()
     render(conn, "index.html", instructors: instructors)
   end
 
