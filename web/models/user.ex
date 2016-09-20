@@ -7,6 +7,7 @@ defmodule Klausurenarchiv.User do
     field :last_name, :string
     field :fb_id, :string
     field :name, :string
+    has_many :uploads, Klausurenarchiv.Upload
 
     timestamps()
   end

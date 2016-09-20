@@ -5,6 +5,7 @@ defmodule Klausurenarchiv.Upload do
     field :description, :string
     field :files, {:array, :string}
     belongs_to :instructor, Klausurenarchiv.Instructor
+    belongs_to :user, Klausurenarchiv.User
 
     timestamps()
   end
