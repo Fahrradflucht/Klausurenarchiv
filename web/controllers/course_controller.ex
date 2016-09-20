@@ -42,10 +42,10 @@ defmodule Klausurenarchiv.CourseController do
     changeset = Course.changeset(course, course_params)
 
     case Repo.update(changeset) do
-      {:ok, course} ->
+      {:ok, _course} ->
         conn
         |> put_flash(:info, "Course updated successfully.")
-        |> redirect(to: course_path(conn, :show, course))
+        |> redirect(to: course_path(conn, :index))
       {:error, changeset} ->
         render(conn, "edit.html", course: course, changeset: changeset)
     end
