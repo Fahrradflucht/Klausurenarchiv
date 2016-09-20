@@ -13,7 +13,7 @@ config :logger, level: :warn
 config :klausurenarchiv, Klausurenarchiv.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
-  password: "postgres",
+  password: System.get_env("KLAUSURENARCHIV_DB_PASS") || "postgres",
   database: "klausurenarchiv_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox

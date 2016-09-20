@@ -26,18 +26,6 @@ defmodule Klausurenarchiv.CourseControllerTest do
     assert html_response(conn, 200) =~ "New course"
   end
 
-  test "shows chosen resource", %{conn: conn} do
-    course = Repo.insert! %Course{}
-    conn = get conn, course_path(conn, :show, course)
-    assert html_response(conn, 200) =~ "Show course"
-  end
-
-  test "renders page not found when id is nonexistent", %{conn: conn} do
-    assert_error_sent 404, fn ->
-      get conn, course_path(conn, :show, -1)
-    end
-  end
-
   test "renders form for editing chosen resource", %{conn: conn} do
     course = Repo.insert! %Course{}
     conn = get conn, course_path(conn, :edit, course)
@@ -47,7 +35,7 @@ defmodule Klausurenarchiv.CourseControllerTest do
   test "updates chosen resource and redirects when data is valid", %{conn: conn} do
     course = Repo.insert! %Course{}
     conn = put conn, course_path(conn, :update, course), course: @valid_attrs
-    assert redirected_to(conn) == course_path(conn, :show, course)
+    assert redirected_to(conn) == course_path(conn, :index)
     assert Repo.get_by(Course, @valid_attrs)
   end
 
