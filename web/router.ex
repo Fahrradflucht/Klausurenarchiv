@@ -23,7 +23,8 @@ defmodule Klausurenarchiv.Router do
 
   scope "/auth", Klausurenarchiv do
     pipe_through :browser
-
+    
+    get "/logout", AuthController, :delete
     get "/:provider", AuthController, :request
     get "/:provider/callback", AuthController, :callback
   end
