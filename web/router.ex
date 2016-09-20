@@ -18,6 +18,10 @@ defmodule Klausurenarchiv.Router do
 
     get "/", PageController, :index
 
+    resources "/courses", CourseController, except: [:show] do
+      resources "/instructors", InstructorController
+    end
+
     resources "/uploads", UploadController
   end
 

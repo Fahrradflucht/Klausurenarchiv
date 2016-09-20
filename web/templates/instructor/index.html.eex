@@ -1,0 +1,28 @@
+<h2>Listing instructors</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Course</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for instructor <- @instructors do %>
+    <tr>
+      <td><%= instructor.name %></td>
+      <td><%= instructor.course_id %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: course_instructor_path(@conn, :show, @course, instructor), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: course_instructor_path(@conn, :edit, @course, instructor), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: course_instructor_path(@conn, :delete, @course, instructor), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New instructor", to: course_instructor_path(@conn, :new, @course) %>
