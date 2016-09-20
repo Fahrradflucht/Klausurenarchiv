@@ -16,9 +16,9 @@
       <td><%= upload.files %></td>
 
       <td class="text-right">
-        <%= link "Show", to: course_instructor_upload_path(@conn, :show, upload, @course, @instructor), class: "btn btn-default btn-xs" %>
-        <%= link "Edit", to: course_instructor_upload_path(@conn, :edit, upload, @course, @instructor), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: course_instructor_upload_path(@conn, :delete, upload, @course, @instructor), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+        <%= link "Show", to: course_instructor_upload_path(@conn, :show, @course, @instructor, upload), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: course_instructor_upload_path(@conn, :edit, @course, @instructor, upload), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: course_instructor_upload_path(@conn, :delete, @course, @instructor, upload), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
       </td>
     </tr>
 <% end %>
