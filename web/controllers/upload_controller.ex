@@ -15,7 +15,7 @@ defmodule Klausurenarchiv.UploadController do
   def new(conn, _params) do
     changeset =
       conn.assigns[:instructor]
-      |> build_assoc(:uploads)
+      |> build_assoc(:uploads, user_id: conn.assigns[:current_user].id)
       |> Upload.changeset()
 
     render(conn, "new.html", changeset: changeset)
@@ -26,7 +26,7 @@ defmodule Klausurenarchiv.UploadController do
     upload = Map.put(upload_params, "files", [filepath])
     changeset =
       conn.assigns[:instructor]
-      |> build_assoc(:uploads)
+      |> build_assoc(:uploads, user_id: conn.assigns[:current_user].id)
       |> Upload.changeset(upload)
     
     case Repo.insert(changeset) do
