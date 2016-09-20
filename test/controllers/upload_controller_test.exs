@@ -1,7 +1,7 @@
 defmodule Klausurenarchiv.UploadControllerTest do
   use Klausurenarchiv.ConnCase
 
-  alias Klausurenarchiv.Upload
+  # alias Klausurenarchiv.Upload
   @valid_attrs %{description: "some content", files: []}
   @invalid_attrs %{}
 

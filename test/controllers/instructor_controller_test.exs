@@ -1,7 +1,7 @@
 defmodule Klausurenarchiv.InstructorControllerTest do
   use Klausurenarchiv.ConnCase
 
-  alias Klausurenarchiv.Instructor
+  # alias Klausurenarchiv.Instructor
   @valid_attrs %{name: "some content"}
   @invalid_attrs %{}
 
