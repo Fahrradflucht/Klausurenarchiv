@@ -13,15 +13,22 @@ defmodule Klausurenarchiv.UploadController do
   end
 
   def new(conn, _params) do
-    changeset = Upload.changeset(%Upload{})
+    changeset =
+      conn.assigns[:instructor]
+      |> build_assoc(:uploads)
+      |> Upload.changeset()
+
     render(conn, "new.html", changeset: changeset)
   end
 
   def create(conn, %{"upload" => upload_params}) do
     filepath = save_file_from_upload(upload_params)
     upload = Map.put(upload_params, "files", [filepath])
-    changeset = Upload.changeset(%Upload{}, upload)
-
+    changeset =
+      conn.assigns[:instructor]
+      |> build_assoc(:uploads)
+      |> Upload.changeset(upload)
+    
     case Repo.insert(changeset) do
       {:ok, _upload} ->
         conn
