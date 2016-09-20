@@ -21,8 +21,10 @@ defmodule Klausurenarchiv.Router do
     resources "/uploads", UploadController
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", Klausurenarchiv do
-  #   pipe_through :api
-  # end
+  scope "/auth", Klausurenarchiv do
+    pipe_through :browser
+
+    get "/:provider", AuthController, :request
+    get "/:provider/callback", AuthController, :callback
+  end
 end
