@@ -1,5 +1,6 @@
 defmodule Klausurenarchiv.UploadController do
   use Klausurenarchiv.Web, :controller
+  plug :assign_course_and_instructor
 
   alias Klausurenarchiv.Upload
 
@@ -22,7 +23,12 @@ defmodule Klausurenarchiv.UploadController do
       {:ok, _upload} ->
         conn
         |> put_flash(:info, "Upload created successfully.")
-        |> redirect(to: upload_path(conn, :index))
+        |> redirect(to: course_instructor_upload_path(
+          conn,
+          :index,
+          conn.assigns[:course],
+          conn.assigns[:instructor]
+        ))
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
@@ -47,7 +53,12 @@ defmodule Klausurenarchiv.UploadController do
       {:ok, upload} ->
         conn
         |> put_flash(:info, "Upload updated successfully.")
-        |> redirect(to: upload_path(conn, :show, upload))
+        |> redirect(to: course_instructor_upload_path(
+          conn,
+          :show,
+          conn.assigns[:course],
+          conn.assigns[:instructor],
+          upload))
       {:error, changeset} ->
         render(conn, "edit.html", upload: upload, changeset: changeset)
     end
@@ -64,7 +75,12 @@ defmodule Klausurenarchiv.UploadController do
 
     conn
     |> put_flash(:info, "Upload deleted successfully.")
-    |> redirect(to: upload_path(conn, :index))
+    |> redirect(to: course_instructor_upload_path(
+      conn,
+      :index,
+      conn.assigns[:course],
+      conn.assigns[:instructor]
+      ))
   end
 
   defp save_file_from_upload(upload_params) do
@@ -85,6 +101,19 @@ defmodule Klausurenarchiv.UploadController do
   defp cp_p(source, destination) do
     with :ok <- File.mkdir_p(Path.dirname(destination)),
          :ok <- File.cp(source, destination), do: :ok
+  end
+
+  defp assign_course_and_instructor(conn, _opts) do
+    case conn.params do
+      %{"course_id" => course_id, "instructor_id" => instructor_id} ->
+        course = Repo.get(Klausurenarchiv.Course, course_id)
+        instructor = Repo.get(Klausurenarchiv.Instructor, instructor_id)
+        conn
+        |> assign(:course, course)
+        |> assign(:instructor, instructor)
+      _ ->
+        conn
+    end
   end
 
 end

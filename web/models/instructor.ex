@@ -3,6 +3,7 @@ defmodule Klausurenarchiv.Instructor do
 
   schema "instructors" do
     field :name, :string
+    has_many :uploads, Klausurenarchiv.Upload
     belongs_to :course, Klausurenarchiv.Course
 
     timestamps()

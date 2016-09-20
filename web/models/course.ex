@@ -3,7 +3,7 @@ defmodule Klausurenarchiv.Course do
 
   schema "courses" do
     field :name, :string
-    has_many :instructors, Klausurenarchiv.Course
+    has_many :instructors, Klausurenarchiv.Instructor
 
 
     timestamps()

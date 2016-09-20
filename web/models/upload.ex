@@ -4,6 +4,7 @@ defmodule Klausurenarchiv.Upload do
   schema "uploads" do
     field :description, :string
     field :files, {:array, :string}
+    belongs_to :instructor, Klausurenarchiv.Instructor
 
     timestamps()
   end

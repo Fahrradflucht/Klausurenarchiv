@@ -10,12 +10,21 @@ defmodule Klausurenarchiv.InstructorController do
   end
 
   def new(conn, _params) do
-    changeset = Instructor.changeset(%Instructor{})
+    changeset =
+      conn.assigns[:course]
+      |> build_assoc(:instructors)
+      |> Instructor.changeset()
+    
+    IO.inspect changeset
+
     render(conn, "new.html", changeset: changeset)
   end
 
   def create(conn, %{"instructor" => instructor_params}) do
-    changeset = Instructor.changeset(%Instructor{}, instructor_params)
+    changeset =
+      conn.assigns[:course]
+      |> build_assoc(:instructors)
+      |> Instructor.changeset(instructor_params)
 
     case Repo.insert(changeset) do
       {:ok, _instructor} ->
