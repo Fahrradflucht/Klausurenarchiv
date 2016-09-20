@@ -15,8 +15,8 @@
     <div class="container">
       <header class="header">
         <ol class="breadcrumb text-right">
-          <%= if current_user(@conn) do %>
-            <li><%= current_user(@conn).name %></li>
+          <%= if @current_user do %>
+            <li><%= @current_user.name %></li>
             <li>
             <%= link "Logout", to: "/auth/logout" %>
             </li>
