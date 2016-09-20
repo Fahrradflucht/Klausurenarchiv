@@ -18,12 +18,10 @@ defmodule Klausurenarchiv.AuthController do
     end
 
     def callback(%{ assigns: %{ ueberauth_auth: auth } } = conn, _params) do
-        IO.inspect auth
-        conn |> redirect(to: "/")
         case find_or_create_from_auth(auth) do
             {:ok, user} ->
                 conn
-                |> put_flash(:info, "Successfully authenticated.")
+                |> put_flash(:info, "Du bist drin!")
                 |> put_session(:current_user, user)
                 |> redirect(to: "/")
             {:error, reason} ->

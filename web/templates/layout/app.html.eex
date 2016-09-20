@@ -14,11 +14,16 @@
   <body>
     <div class="container">
       <header class="header">
-        <nav role="navigation">
-          <ul class="nav nav-pills pull-right">
-            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
-          </ul>
-        </nav>
+        <ol class="breadcrumb text-right">
+          <%= if current_user(@conn) do %>
+            <li><%= current_user(@conn).name %></li>
+            <li>
+            <%= link "Logout", to: "/auth/logout" %>
+            </li>
+          <% else %>
+            <li><%= link "Log in via Facebook", to: "/auth/facebook" %></li>
+          <% end %>
+        </ol>
         <span class="logo"></span>
       </header>
 
@@ -32,4 +37,5 @@
     </div> <!-- /container -->
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
+
 </html>
