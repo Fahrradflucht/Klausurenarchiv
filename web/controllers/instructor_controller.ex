@@ -18,8 +18,6 @@ defmodule Klausurenarchiv.InstructorController do
       |> build_assoc(:instructors)
       |> Instructor.changeset()
     
-    IO.inspect changeset
-
     render(conn, "new.html", changeset: changeset)
   end
 
