@@ -1,10 +1,11 @@
 defmodule Klausurenarchiv.CourseController do
   use Klausurenarchiv.Web, :controller
 
+  import Ecto.Query, only: [from: 2]
   alias Klausurenarchiv.Course
 
   def index(conn, _params) do
-    courses = Repo.all(Course)
+    courses = Repo.all(from c in Course, order_by: c.name)
     render(conn, "index.html", courses: courses)
   end
 
