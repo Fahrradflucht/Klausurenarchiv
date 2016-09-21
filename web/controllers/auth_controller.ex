@@ -17,14 +17,16 @@ defmodule Klausurenarchiv.AuthController do
         |> redirect(to: "/")
     end
 
-    def callback(%{ assigns: %{ ueberauth_auth: auth } } = conn, _params) do
+    def callback(%{ assigns: %{ ueberauth_auth: auth } } = conn, params) do
+        dest = params["state"] || "/"
+
         case find_or_create_from_auth(auth) do
             {:ok, user} ->
                 conn
                 |> put_flash(:info, "Du bist drin!")
                 |> assign(:current_user, user)
                 |> put_session(:user_id, user.id)
-                |> redirect(to: "/")
+                |> redirect(to: dest)
             {:error, reason} ->
                 conn
                 |> put_flash(:error, reason)

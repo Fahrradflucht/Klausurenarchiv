@@ -1,6 +1,7 @@
 defmodule Klausurenarchiv.UploadController do
   use Klausurenarchiv.Web, :controller
   plug :assign_course_and_instructor
+  plug :authenticate_user when action in [:new, :create, :edit, :update, :delete]
 
   alias Klausurenarchiv.Upload
 
@@ -124,6 +125,24 @@ defmodule Klausurenarchiv.UploadController do
         |> assign(:instructor, instructor)
       _ ->
         conn
+    end
+  end
+
+  defp authenticate_user(conn, _opts) do
+    if conn.assigns.current_user do
+      conn
+    else
+      state = URI.encode_query(%{
+        "state" => course_instructor_upload_path(
+          conn,
+          :index,
+          conn.assigns[:course],
+          conn.assigns[:instructor]
+      )})
+      
+      conn
+      |> redirect(to: "/auth/facebook?#{state}")
+      |> halt()
     end
   end
 end
