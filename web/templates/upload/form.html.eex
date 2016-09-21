@@ -13,7 +13,7 @@
 
   <div class="form-group">
     <label class= "control-label">File</label>
-    <%= file_input f, :file%>
+    <%= file_input f, :files, multiple: true, name: "upload[files][]"%>
     <%= error_tag f, :files %>
   </div>
 

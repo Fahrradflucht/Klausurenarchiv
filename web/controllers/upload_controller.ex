@@ -22,8 +22,8 @@ defmodule Klausurenarchiv.UploadController do
   end
 
   def create(conn, %{"upload" => upload_params}) do
-    filepath = save_file_from_upload(upload_params)
-    upload = Map.put(upload_params, "files", [filepath])
+    files = save_files_from_upload(upload_params)
+    upload = Map.put(upload_params, "files", files)
     changeset =
       conn.assigns[:instructor]
       |> build_assoc(:uploads, user_id: conn.assigns[:current_user].id)
@@ -77,10 +77,10 @@ defmodule Klausurenarchiv.UploadController do
   def delete(conn, %{"id" => id}) do
     upload = Repo.get!(Upload, id)
 
-    File.rm(hd upload.files)
+    # Delete files from storage
+    upload.files
+    |> Enum.map(&(File.rm(&1)))
 
-    # Here we use delete! (with a bang) because we expect
-    # it to always work (and if it does not, it will raise).
     Repo.delete!(upload)
 
     conn
@@ -93,17 +93,18 @@ defmodule Klausurenarchiv.UploadController do
       ))
   end
 
-  defp save_file_from_upload(upload_params) do
-    if file = upload_params["file"] do
-      basepath = Application.get_env(:klausurenarchiv, :store)[:path]
-      dest = Path.join(basepath, file.filename)
-      case cp_p(file.path, dest) do
-        :ok -> dest
-        _ -> nil
-      end
-    else
-      nil
-    end
+  defp save_files_from_upload(upload_params) do
+    upload_params["files"]
+    |> Enum.map(
+      fn(file) ->
+        basepath = Application.get_env(:klausurenarchiv, :store)[:path]
+        dest = Path.join(basepath, file.filename)
+        case cp_p(file.path, dest) do
+          :ok -> dest
+          _ -> nil
+        end
+      end)
+    |> Enum.filter(&(&1 != nil))
   end
 
   # Works like `File.cp` with the addition that it creates
@@ -125,5 +126,4 @@ defmodule Klausurenarchiv.UploadController do
         conn
     end
   end
-
 end
