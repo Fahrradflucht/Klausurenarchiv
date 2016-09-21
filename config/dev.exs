@@ -44,3 +44,6 @@ config :klausurenarchiv, Klausurenarchiv.Repo,
 
 config :klausurenarchiv, :store,
   path: "/Users/Mathis/Desktop/Klausurenarchiv"
+
+config :klausurenarchiv, :users,
+  initial_admins: ["10205477885426354"]
