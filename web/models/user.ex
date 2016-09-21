@@ -36,7 +36,7 @@ defmodule Klausurenarchiv.User do
       changeset
       |> get_change(:fb_id)
     
-    Application.get_env(:klausurenarchiv, :users)[:initial_admins]
+    Application.get_env(:klausurenarchiv, :users)[:initial_admins] || []
     |> Enum.any?(&(&1 == fb_id))
   end
 end
