@@ -7,6 +7,7 @@ defmodule Klausurenarchiv.User do
     field :last_name, :string
     field :fb_id, :string
     field :name, :string
+    field :is_admin, :boolean
     has_many :uploads, Klausurenarchiv.Upload
 
     timestamps()
@@ -17,7 +18,7 @@ defmodule Klausurenarchiv.User do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:email, :first_name, :last_name, :fb_id, :name])
+    |> cast(params, [:email, :first_name, :last_name, :fb_id, :name, :is_admin])
     |> validate_required([:email, :fb_id, :name])
   end
 end
