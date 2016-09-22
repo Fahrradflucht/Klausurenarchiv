@@ -12,6 +12,19 @@
   </div>
 
   <div class="form-group">
+    <%= label f, :semester, class: "control-label" %>
+    <div class="row">
+    <div class="col-xs-6">
+    <%= select f, :semester_kind, ["WiSe", "SoSe"], class: "form-control" %>
+    </div>
+    <div class="col-xs-6">
+    <%= select f, :semester_year, year_list, class: "form-control" %>
+    </div>
+    </div>
+    <%= error_tag f, :semester %>
+  </div>
+
+  <div class="form-group">
     <label class= "control-label">File</label>
     <%= file_input f, :files, multiple: true, name: "upload[files][]"%>
     <%= error_tag f, :files %>

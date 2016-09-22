@@ -3,7 +3,7 @@
 <table class="table">
   <thead>
     <tr>
-      <th>Description</th>
+      <th>Semester</th>
       <th>Files</th>
 
       <th></th>
@@ -12,7 +12,7 @@
   <tbody>
 <%= for upload <- @uploads do %>
     <tr>
-      <td><%= upload.description %></td>
+      <td><%= upload.semester %></td>
       <td><%= upload.files %></td>
 
       <td class="text-right">

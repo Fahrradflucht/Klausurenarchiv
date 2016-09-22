@@ -10,6 +10,9 @@ defmodule Klausurenarchiv.UploadController do
       conn.assigns[:instructor]
       |> assoc(:uploads)
       |> Repo.all()
+      |> Enum.sort(fn(a, b) ->
+          Klausurenarchiv.Semester.compare_strings(a.semester, b.semester)
+        end)
     render(conn, "index.html", uploads: uploads)
   end
 
@@ -23,8 +26,16 @@ defmodule Klausurenarchiv.UploadController do
   end
 
   def create(conn, %{"upload" => upload_params}) do
+
+    # Files
     files = save_files_from_upload(upload_params)
     upload = Map.put(upload_params, "files", files)
+
+    # Semester
+    %{"semester_kind" => kind, "semester_year" => year} = upload
+    upload = Map.put(upload, "semester", to_string %Klausurenarchiv.Semester{kind: kind, year: year})
+
+    # Assocs
     changeset =
       conn.assigns[:instructor]
       |> build_assoc(:uploads, user_id: conn.assigns[:current_user].id)
