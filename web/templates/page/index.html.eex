@@ -1,6 +1,4 @@
 <div class="jumbotron">
-  <h2>Klausurenarchiv Sozialökonomie</h2>
-  <p class="lead">Solidarität muss praktisch werden</p>
   <%= button "Kurse", to: course_path(@conn, :index), method: "get", class: "btn btn-primary" %>
 </div>
 
