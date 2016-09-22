@@ -1,6 +1,7 @@
 defmodule Klausurenarchiv.InstructorController do
   use Klausurenarchiv.Web, :controller
   plug :assign_course
+  plug :authenticate_user when action in [:new, :create, :edit, :update, :delete]
 
   alias Klausurenarchiv.Instructor
 
@@ -81,6 +82,23 @@ defmodule Klausurenarchiv.InstructorController do
         assign(conn, :course, course)
       _ ->
         conn
+    end
+  end
+
+  defp authenticate_user(conn, _opts) do
+    if conn.assigns.current_user do
+      conn
+    else
+      state = URI.encode_query(%{
+        "state" => course_instructor_path(
+          conn,
+          :index,
+          conn.assigns[:course]
+      )})
+      
+      conn
+      |> redirect(to: "/auth/facebook?#{state}")
+      |> halt()
     end
   end
 end

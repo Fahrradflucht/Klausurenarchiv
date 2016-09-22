@@ -1,5 +1,6 @@
 defmodule Klausurenarchiv.CourseController do
   use Klausurenarchiv.Web, :controller
+  plug :authenticate_user when action in [:new, :create, :edit, :update, :delete]
 
   import Ecto.Query, only: [from: 2]
   alias Klausurenarchiv.Course
@@ -62,5 +63,21 @@ defmodule Klausurenarchiv.CourseController do
     conn
     |> put_flash(:info, "Course deleted successfully.")
     |> redirect(to: course_path(conn, :index))
+  end
+
+  defp authenticate_user(conn, _opts) do
+    if conn.assigns.current_user do
+      conn
+    else
+      state = URI.encode_query(%{
+        "state" => course_path(
+          conn,
+          :index
+      )})
+      
+      conn
+      |> redirect(to: "/auth/facebook?#{state}")
+      |> halt()
+    end
   end
 end
