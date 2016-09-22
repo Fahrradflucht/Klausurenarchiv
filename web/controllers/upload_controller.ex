@@ -116,9 +116,13 @@ defmodule Klausurenarchiv.UploadController do
       save_file(conn, file)
     end
 
-    upload_params["files"]
-    |> Enum.map(file_saver)
-    |> Enum.filter(&(&1 != nil))
+    if files = upload_params["files"] do
+      files
+      |> Enum.map(file_saver)
+      |> Enum.filter(&(&1 != nil))
+    else
+      nil
+    end
   end
 
   defp save_file(conn, file) do

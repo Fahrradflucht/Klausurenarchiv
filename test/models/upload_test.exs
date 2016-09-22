@@ -3,7 +3,7 @@ defmodule Klausurenarchiv.UploadTest do
 
   alias Klausurenarchiv.Upload
 
-  @valid_attrs %{description: "some content", files: []}
+  @valid_attrs %{description: "some content", files: [], semester: "WiSe 2014"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
