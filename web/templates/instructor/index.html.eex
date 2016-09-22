@@ -12,17 +12,22 @@
   <tbody>
 <%= for instructor <- @instructors do %>
     <tr>
-      <td><%= instructor.name %></td>
+      <td>
+        <%= link instructor.name, to: course_instructor_upload_path(@conn, :index, @course, instructor), class: "btn btn-default btn-xs" %>
+      </td>
       <td><%= instructor.course_id %></td>
 
-      <td class="text-right">
-        <%= link "Show", to: course_instructor_upload_path(@conn, :index, @course, instructor), class: "btn btn-default btn-xs" %>
-        <%= link "Edit", to: course_instructor_path(@conn, :edit, @course, instructor), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: course_instructor_path(@conn, :delete, @course, instructor), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
-      </td>
+      <%= if @current_user do %>
+        <td class="text-right">
+          <%= link "Edit", to: course_instructor_path(@conn, :edit, @course, instructor), class: "btn btn-default btn-xs" %>
+          <%= link "Delete", to: course_instructor_path(@conn, :delete, @course, instructor), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+        </td>
+      <% end %>
     </tr>
 <% end %>
   </tbody>
 </table>
 
-<%= link "New instructor", to: course_instructor_path(@conn, :new, @course) %>
+<%= if @current_user do %>
+  <%= link "New instructor", to: course_instructor_path(@conn, :new, @course) %>
+<% end %>
