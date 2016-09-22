@@ -24,7 +24,12 @@
             <li><%= link "Log in via Facebook", to: "/auth/facebook" %></li>
           <% end %>
         </ol>
-        <span class="logo"></span>
+        <h2 class="text-center header-brand">
+          <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+          Klausurenarchiv
+          <small>Sozialökonomie</small>
+        </h2>
+        <!-- <span class="logo"></span> -->
       </header>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
