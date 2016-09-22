@@ -22,7 +22,7 @@ defmodule Klausurenarchiv.Router do
 
     resources "/courses", CourseController, except: [:show] do
       resources "/instructors", InstructorController, except: [:show] do
-        resources "/uploads", UploadController
+        resources "/uploads", UploadController, except: [:update, :edit]
       end
     end
 

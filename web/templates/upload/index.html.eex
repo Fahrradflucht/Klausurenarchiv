@@ -27,10 +27,11 @@
         <% end %>
       </td>
 
-      <td class="text-right">
-        <%= link "Edit", to: course_instructor_upload_path(@conn, :edit, @course, @instructor, upload), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: course_instructor_upload_path(@conn, :delete, @course, @instructor, upload), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
-      </td>
+      <%= if @current_user && (@current_user.is_admin || @current_user.id == upload.id) do %>
+        <td class="text-right">
+          <%= link "Delete", to: course_instructor_upload_path(@conn, :delete, @course, @instructor, upload), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+        </td>
+      <% end %>
     </tr>
 <% end %>
   </tbody>

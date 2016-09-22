@@ -93,22 +93,35 @@ defmodule Klausurenarchiv.UploadController do
   end
 
   def delete(conn, %{"id" => id}) do
+    current_user = conn.assigns.current_user
+
     upload = Repo.get!(Upload, id)
 
-    # Delete files from storage
-    upload.files
-    |> Enum.map(&(File.rm(&1)))
+    if current_user.is_admin || (current_user.id == upload.user_id) do
+      # Delete files from storage
+      upload.files
+      |> Enum.map(&(File.rm(&1)))
 
-    Repo.delete!(upload)
+      Repo.delete!(upload)
 
-    conn
-    |> put_flash(:info, "Upload deleted successfully.")
-    |> redirect(to: course_instructor_upload_path(
-      conn,
-      :index,
-      conn.assigns[:course],
-      conn.assigns[:instructor]
-      ))
+      conn
+      |> put_flash(:info, "Upload deleted successfully.")
+      |> redirect(to: course_instructor_upload_path(
+        conn,
+        :index,
+        conn.assigns[:course],
+        conn.assigns[:instructor]
+        ))
+    else
+      conn
+      |> put_flash(:error, "Unauthorized")
+      |> redirect(to: course_instructor_upload_path(
+        conn,
+        :index,
+        conn.assigns[:course],
+        conn.assigns[:instructor]
+        ))
+    end
   end
 
   defp save_files_from_upload(conn, upload_params) do
