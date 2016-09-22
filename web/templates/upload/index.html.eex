@@ -13,10 +13,21 @@
 <%= for upload <- @uploads do %>
     <tr>
       <td><%= upload.semester %></td>
-      <td><%= upload.files %></td>
+      <td>
+        <%= for {file, index} <- Enum.with_index(upload.files) do %>
+          <%= link Path.basename(file),
+          to: course_instructor_upload_path(
+            @conn,
+            :show,
+            @course,
+            @instructor,
+            upload,
+            file: index)
+          %><br>
+        <% end %>
+      </td>
 
       <td class="text-right">
-        <%= link "Show", to: course_instructor_upload_path(@conn, :show, @course, @instructor, upload), class: "btn btn-default btn-xs" %>
         <%= link "Edit", to: course_instructor_upload_path(@conn, :edit, @course, @instructor, upload), class: "btn btn-default btn-xs" %>
         <%= link "Delete", to: course_instructor_upload_path(@conn, :delete, @course, @instructor, upload), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
       </td>

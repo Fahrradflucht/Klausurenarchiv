@@ -56,9 +56,15 @@ defmodule Klausurenarchiv.UploadController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
+  def show(conn, %{"id" => id, "file" => index_string}) do
+    {index, _} = Integer.parse index_string
+
     upload = Repo.get!(Upload, id)
-    Plug.Conn.send_file(conn, 200, hd upload.files)
+    file =
+      upload.files
+      |> Enum.at(index)
+
+    Plug.Conn.send_file(conn, 200, file)
   end
 
   def edit(conn, %{"id" => id}) do
