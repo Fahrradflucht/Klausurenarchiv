@@ -28,7 +28,7 @@ defmodule Klausurenarchiv.UploadController do
   def create(conn, %{"upload" => upload_params}) do
 
     # Files
-    files = save_files_from_upload(upload_params)
+    files = save_files_from_upload(conn, upload_params)
     upload = Map.put(upload_params, "files", files)
 
     # Semester
@@ -111,18 +111,32 @@ defmodule Klausurenarchiv.UploadController do
       ))
   end
 
-  defp save_files_from_upload(upload_params) do
+  defp save_files_from_upload(conn, upload_params) do
+    file_saver = fn file ->
+      save_file(conn, file)
+    end
+
     upload_params["files"]
-    |> Enum.map(
-      fn(file) ->
-        basepath = Application.get_env(:klausurenarchiv, :store)[:path]
-        dest = Path.join(basepath, file.filename)
-        case cp_p(file.path, dest) do
-          :ok -> dest
-          _ -> nil
-        end
-      end)
+    |> Enum.map(file_saver)
     |> Enum.filter(&(&1 != nil))
+  end
+
+  defp save_file(conn, file) do
+    basepath = Application.get_env(:klausurenarchiv, :store)[:path]
+    dest =
+      Path.join(
+        [
+          basepath,
+          conn.assigns[:course].name,
+          conn.assigns[:instructor].name,
+          to_string(System.os_time),
+          file.filename
+        ]
+      )
+    case cp_p(file.path, dest) do
+      :ok -> dest
+      _ -> nil
+    end
   end
 
   # Works like `File.cp` with the addition that it creates
