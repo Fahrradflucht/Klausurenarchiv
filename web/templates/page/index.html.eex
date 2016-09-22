@@ -22,7 +22,10 @@
     <h4>About</h4>
     <ul>
       <li>
-        <a href="#">Impressum (TODO)</a>
+        <%= link "Impressum", to: page_path(@conn, :show, :impressum) %>
+      </li>
+      <li>
+        <%= link "Datenschutz", to: page_path(@conn, :show, :datenschutz) %>
       </li>
     </ul>
   </div>

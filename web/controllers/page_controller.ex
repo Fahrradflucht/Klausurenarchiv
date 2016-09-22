@@ -4,4 +4,8 @@ defmodule Klausurenarchiv.PageController do
   def index(conn, _params) do
     render conn, "index.html"
   end
+
+  def show(conn, %{"name" => name}) do
+    render conn, "#{name}.html"
+  end
 end
