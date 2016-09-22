@@ -18,6 +18,7 @@ defmodule Klausurenarchiv.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+    get "/pages/:name", PageController, :show
 
     resources "/courses", CourseController, except: [:show] do
       resources "/instructors", InstructorController, except: [:show] do
