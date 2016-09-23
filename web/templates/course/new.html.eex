@@ -3,4 +3,4 @@
 <%= render "form.html", changeset: @changeset,
                         action: course_path(@conn, :create) %>
 
-<%= link "Back", to: course_path(@conn, :index) %>
+<%= link "Zurück", to: course_path(@conn, :index) %>
