@@ -26,4 +26,7 @@
   </tbody>
 </table>
 
-<%= link "New course", to: course_path(@conn, :new) %>
+<div class="row">
+  <%= link "Back", to: page_path(@conn, :index), class: "col-xs-1"%>
+  <%= link "New course", to: course_path(@conn, :new), class: "col-xs-11 text-right" %>
+</div>
