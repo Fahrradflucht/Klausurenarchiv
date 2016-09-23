@@ -1,4 +1,5 @@
 /* This file is for your main application css. */
-.header-brand{
+a.header-brand{
     color: darkcyan;
+    text-decoration: none;
 }

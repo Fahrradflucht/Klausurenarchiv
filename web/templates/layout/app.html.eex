@@ -24,11 +24,15 @@
             <li><%= link "Log in via Facebook", to: "/auth/facebook" %></li>
           <% end %>
         </ol>
-        <h2 class="text-center header-brand">
-          <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
-          Klausurenarchiv
-          <small>Sozialökonomie</small>
-        </h2>
+        <a href="/" class="header-brand">
+        <%= link to: page_path(@conn, :index), class: "header-brand" do %>
+          <h2 class="text-center">
+            <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+            Klausurenarchiv
+            <small>Sozialökonomie</small>
+          </h2>
+        <% end %>
+        </a>
         <!-- <span class="logo"></span> -->
       </header>
 
