@@ -1,7 +1,7 @@
 <%= form_for @changeset, @action, [multipart: true], fn f -> %>
   <%= if @changeset.action do %>
     <div class="alert alert-danger">
-      <p>Oops, something went wrong! Please check the errors below.</p>
+      <p>Oops, da gabs nen Fehler! Check das bitte nochmal.</p>
     </div>
   <% end %>
 
@@ -19,12 +19,12 @@
   </div>
 
   <div class="form-group">
-    <label class= "control-label">File</label>
+    <label class= "control-label">Dateien</label>
     <%= file_input f, :files, multiple: true, name: "upload[files][]"%>
     <%= error_tag f, :files %>
   </div>
 
   <div class="form-group">
-    <%= submit "Submit", class: "btn btn-primary" %>
+    <%= submit "Speichern", class: "btn btn-primary" %>
   </div>
 <% end %>

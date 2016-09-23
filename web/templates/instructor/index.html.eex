@@ -16,9 +16,9 @@
       </td>
 
       <td class="text-right">
-        <%= link "Edit", to: course_instructor_path(@conn, :edit, @course, instructor), class: "btn btn-default btn-xs" %>
+        <%= link "Bearbeiten", to: course_instructor_path(@conn, :edit, @course, instructor), class: "btn btn-default btn-xs" %>
         <%= if @current_user && @current_user.is_admin do %>
-          <%= link "Delete", to: course_instructor_path(@conn, :delete, @course, instructor), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+          <%= link "Löschen", to: course_instructor_path(@conn, :delete, @course, instructor), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
         <% end %>
       </td>
     </tr>
@@ -27,6 +27,6 @@
 </table>
 
 <div class="row">
-  <%= link "Back", to: course_path(@conn, :index), class: "col-xs-1"%>
-  <%= link "New instructor", to: course_instructor_path(@conn, :new, @course), class: "col-xs-11 text-right"%>
+  <%= link "Zurück", to: course_path(@conn, :index), class: "col-xs-1"%>
+  <%= link "Neue*n Lehrende*n", to: course_instructor_path(@conn, :new, @course), class: "col-xs-11 text-right"%>
 </div>
