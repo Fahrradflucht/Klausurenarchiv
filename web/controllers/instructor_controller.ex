@@ -2,6 +2,7 @@ defmodule Klausurenarchiv.InstructorController do
   use Klausurenarchiv.Web, :controller
   plug :assign_course
   plug :authenticate_user when action in [:new, :create, :edit, :update, :delete]
+  plug Klausurenarchiv.AdminPlug when action in [:delete] 
 
   alias Klausurenarchiv.Instructor
 

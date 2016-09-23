@@ -1,6 +1,7 @@
 defmodule Klausurenarchiv.CourseController do
   use Klausurenarchiv.Web, :controller
   plug :authenticate_user when action in [:new, :create, :edit, :update, :delete]
+  plug Klausurenarchiv.AdminPlug when action in [:delete] 
 
   import Ecto.Query, only: [from: 2]
   alias Klausurenarchiv.Course

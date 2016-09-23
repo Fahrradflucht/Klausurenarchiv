@@ -15,12 +15,14 @@
         <%= link course.name, to: course_instructor_path(@conn, :index, course), class: "btn btn-default btn-xs" %>
       </td>
 
-      <%= if @current_user do %>
-        <td class="text-right">
+      <td class="text-right">
+        <%= if @current_user do %>
           <%= link "Edit", to: course_path(@conn, :edit, course), class: "btn btn-default btn-xs" %>
-          <%= link "Delete", to: course_path(@conn, :delete, course), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
-        </td>
-      <% end %>
+          <%= if @current_user.is_admin do %>
+            <%= link "Delete", to: course_path(@conn, :delete, course), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+          <% end %>
+        <% end %>
+      </td>
     </tr>
 <% end %>
   </tbody>
