@@ -27,11 +27,11 @@
         <% end %>
       </td>
 
-      <%= if @current_user && (@current_user.is_admin || @current_user.id == upload.id) do %>
-        <td class="text-right">
+      <td class="text-right">
+        <%= if @current_user && (@current_user.is_admin || @current_user.id == upload.user_id) do %>
           <%= link "Delete", to: course_instructor_upload_path(@conn, :delete, @course, @instructor, upload), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
-        </td>
-      <% end %>
+        <% end %>
+      </td>
     </tr>
 <% end %>
   </tbody>
