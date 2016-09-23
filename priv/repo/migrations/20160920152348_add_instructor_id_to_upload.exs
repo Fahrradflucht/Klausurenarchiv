@@ -3,7 +3,7 @@ defmodule Klausurenarchiv.Repo.Migrations.AddInstructorIdToUpload do
 
   def up do
     alter table(:uploads) do
-      add :instructor_id, references(:instructors, on_delete: :nothing)
+      add :instructor_id, references(:instructors, on_delete: :nilify_all)
     end
 
     create index(:uploads, [:instructor_id])
