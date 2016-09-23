@@ -1,10 +1,9 @@
-<h2>Listing instructors</h2>
+<h2>Lehrende für <%= @course.name %></h2>
 
 <table class="table">
   <thead>
     <tr>
       <th>Name</th>
-      <th>Course</th>
 
       <th></th>
     </tr>
@@ -15,7 +14,6 @@
       <td>
         <%= link instructor.name, to: course_instructor_upload_path(@conn, :index, @course, instructor), class: "btn btn-default btn-xs" %>
       </td>
-      <td><%= instructor.course_id %></td>
 
       <td class="text-right">
         <%= link "Edit", to: course_instructor_path(@conn, :edit, @course, instructor), class: "btn btn-default btn-xs" %>
