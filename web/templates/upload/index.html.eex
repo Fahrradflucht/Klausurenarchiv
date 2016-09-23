@@ -38,6 +38,6 @@
 </table>
 
 <div class="row">
-  <%= link "Zurück", to: course_instructor_path(@conn, :index, @course), class: "col-xs-1"%>
-  <%= link "Neue Klausur", to: course_instructor_upload_path(@conn, :new, @course, @instructor), class: "col-xs-11 text-right" %>
+  <%= link "Zurück", to: course_instructor_path(@conn, :index, @course), class: "col-xs-6"%>
+  <%= link "Neue Klausur", to: course_instructor_upload_path(@conn, :new, @course, @instructor), class: "col-xs-6 text-right" %>
 </div>

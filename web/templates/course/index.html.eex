@@ -27,6 +27,6 @@
 </table>
 
 <div class="row">
-  <%= link "Zurück", to: page_path(@conn, :index), class: "col-xs-1"%>
-  <%= link "Neuer Kurs", to: course_path(@conn, :new), class: "col-xs-11 text-right" %>
+  <%= link "Zurück", to: page_path(@conn, :index), class: "col-xs-6"%>
+  <%= link "Neuer Kurs", to: course_path(@conn, :new), class: "col-xs-6 text-right" %>
 </div>
