@@ -18,11 +18,9 @@
       <td><%= instructor.course_id %></td>
 
       <td class="text-right">
-        <%= if @current_user do %>
-          <%= link "Edit", to: course_instructor_path(@conn, :edit, @course, instructor), class: "btn btn-default btn-xs" %>
-          <%= if @current_user.is_admin do %>
-            <%= link "Delete", to: course_instructor_path(@conn, :delete, @course, instructor), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
-          <% end %>
+        <%= link "Edit", to: course_instructor_path(@conn, :edit, @course, instructor), class: "btn btn-default btn-xs" %>
+        <%= if @current_user && @current_user.is_admin do %>
+          <%= link "Delete", to: course_instructor_path(@conn, :delete, @course, instructor), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
         <% end %>
       </td>
     </tr>
@@ -30,6 +28,4 @@
   </tbody>
 </table>
 
-<%= if @current_user do %>
-  <%= link "New instructor", to: course_instructor_path(@conn, :new, @course) %>
-<% end %>
+<%= link "New instructor", to: course_instructor_path(@conn, :new, @course) %>
