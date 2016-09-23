@@ -29,7 +29,7 @@
 
       <td class="text-right">
         <%= if @current_user && (@current_user.is_admin || @current_user.id == upload.user_id) do %>
-          <%= link "Delete", to: course_instructor_upload_path(@conn, :delete, @course, @instructor, upload), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+          <%= link "Delete", to: course_instructor_upload_path(@conn, :delete, @course, @instructor, upload), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-sm" %>
         <% end %>
       </td>
     </tr>
@@ -38,6 +38,10 @@
 </table>
 
 <div class="row">
-  <%= link "Zurück", to: course_instructor_path(@conn, :index, @course), class: "col-xs-6"%>
-  <%= link "Neue Klausur", to: course_instructor_upload_path(@conn, :new, @course, @instructor), class: "col-xs-6 text-right" %>
+  <%= link to: course_instructor_path(@conn, :index, @course), class: "col-xs-6" do %>
+    <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span> Zurück
+  <% end %>
+  <%= link to: course_instructor_upload_path(@conn, :new, @course, @instructor), class: "col-xs-6 text-right" do %>
+    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Neue Klausur
+  <% end %>
 </div>

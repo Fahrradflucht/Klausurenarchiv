@@ -3,4 +3,6 @@
 <%= render "form.html", changeset: @changeset,
                         action: course_instructor_path(@conn, :create, @course) %>
 
-<%= link "Zurück", to: course_instructor_path(@conn, :index, @course) %>
+<%= link to: course_instructor_path(@conn, :index, @course), class: "col-xs-6" do %>
+    <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span> Zurück
+<% end %>

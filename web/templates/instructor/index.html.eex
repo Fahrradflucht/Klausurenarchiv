@@ -12,13 +12,15 @@
 <%= for instructor <- @instructors do %>
     <tr>
       <td>
-        <%= link instructor.name, to: course_instructor_upload_path(@conn, :index, @course, instructor), class: "btn btn-default btn-xs" %>
+        <%= link instructor.name, to: course_instructor_upload_path(@conn, :index, @course, instructor), class: "btn btn-default btn-sm" %>
       </td>
 
       <td class="text-right">
-        <%= link "Bearbeiten", to: course_instructor_path(@conn, :edit, @course, instructor), class: "btn btn-default btn-xs" %>
+        <%= link to: course_instructor_path(@conn, :edit, @course, instructor), class: "btn btn-default btn-sm" do %>
+          <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+        <% end %>
         <%= if @current_user && @current_user.is_admin do %>
-          <%= link "Löschen", to: course_instructor_path(@conn, :delete, @course, instructor), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+          <%= link "Löschen", to: course_instructor_path(@conn, :delete, @course, instructor), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-sm" %>
         <% end %>
       </td>
     </tr>
@@ -27,6 +29,10 @@
 </table>
 
 <div class="row">
-  <%= link "Zurück", to: course_path(@conn, :index), class: "col-xs-6"%>
-  <%= link "Neue*n Lehrende*n", to: course_instructor_path(@conn, :new, @course), class: "col-xs-6 text-right"%>
+  <%= link to: course_path(@conn, :index), class: "col-xs-6" do %>
+    <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span> Zurück
+  <% end %>
+  <%= link to: course_instructor_path(@conn, :new, @course), class: "col-xs-6 text-right" do %>
+    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Neue*n Lehrende*n
+  <% end %>
 </div>
