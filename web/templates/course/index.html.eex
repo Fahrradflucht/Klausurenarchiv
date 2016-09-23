@@ -1,4 +1,4 @@
-<h2>Listing courses</h2>
+<h2>Alle Kurse</h2>
 
 <table class="table">
   <thead>
@@ -16,9 +16,9 @@
       </td>
 
       <td class="text-right">
-        <%= link "Edit", to: course_path(@conn, :edit, course), class: "btn btn-default btn-xs" %>
+        <%= link "Bearbeiten", to: course_path(@conn, :edit, course), class: "btn btn-default btn-xs" %>
         <%= if @current_user && @current_user.is_admin do %>
-          <%= link "Delete", to: course_path(@conn, :delete, course), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+          <%= link "Löschen", to: course_path(@conn, :delete, course), method: :delete, data: [confirm: "Bist du sicher?"], class: "btn btn-danger btn-xs" %>
         <% end %>
       </td>
     </tr>
@@ -27,6 +27,6 @@
 </table>
 
 <div class="row">
-  <%= link "Back", to: page_path(@conn, :index), class: "col-xs-1"%>
-  <%= link "New course", to: course_path(@conn, :new), class: "col-xs-11 text-right" %>
+  <%= link "Zurück", to: page_path(@conn, :index), class: "col-xs-1"%>
+  <%= link "Neuer Kurs", to: course_path(@conn, :new), class: "col-xs-11 text-right" %>
 </div>

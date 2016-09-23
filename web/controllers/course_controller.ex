@@ -29,11 +29,6 @@ defmodule Klausurenarchiv.CourseController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    course = Repo.get!(Course, id)
-    render(conn, "show.html", course: course)
-  end
-
   def edit(conn, %{"id" => id}) do
     course = Repo.get!(Course, id)
     changeset = Course.changeset(course)

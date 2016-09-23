@@ -39,11 +39,6 @@ defmodule Klausurenarchiv.InstructorController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    instructor = Repo.get!(Instructor, id)
-    render(conn, "show.html", instructor: instructor)
-  end
-
   def edit(conn, %{"id" => id}) do
     instructor = Repo.get!(Instructor, id)
     changeset = Instructor.changeset(instructor)

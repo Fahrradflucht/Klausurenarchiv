@@ -1,4 +1,4 @@
-<h2>New course</h2>
+<h2>Neuer Kurs</h2>
 
 <%= render "form.html", changeset: @changeset,
                         action: course_path(@conn, :create) %>

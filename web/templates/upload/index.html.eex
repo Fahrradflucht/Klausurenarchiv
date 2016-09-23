@@ -4,7 +4,7 @@
   <thead>
     <tr>
       <th>Semester</th>
-      <th>Files</th>
+      <th>Dateien</th>
 
       <th></th>
     </tr>
@@ -38,6 +38,6 @@
 </table>
 
 <div class="row">
-  <%= link "Back", to: course_instructor_path(@conn, :index, @course), class: "col-xs-1"%>
-  <%= link "New upload", to: course_instructor_upload_path(@conn, :new, @course, @instructor), class: "col-xs-11 text-right" %>
+  <%= link "Zurück", to: course_instructor_path(@conn, :index, @course), class: "col-xs-1"%>
+  <%= link "Neue Klausur", to: course_instructor_upload_path(@conn, :new, @course, @instructor), class: "col-xs-11 text-right" %>
 </div>

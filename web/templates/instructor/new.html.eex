@@ -1,6 +1,6 @@
-<h2>New instructor</h2>
+<h2>Neue*n Lehrende*n</h2>
 
 <%= render "form.html", changeset: @changeset,
                         action: course_instructor_path(@conn, :create, @course) %>
 
-<%= link "Back", to: course_instructor_path(@conn, :index, @course) %>
+<%= link "Zurück", to: course_instructor_path(@conn, :index, @course) %>
