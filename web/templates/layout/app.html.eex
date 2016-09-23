@@ -21,7 +21,7 @@
             <%= link "Logout", to: "/auth/logout" %>
             </li>
           <% else %>
-            <li><%= link "Log in via Facebook", to: "/auth/facebook" %></li>
+            <li><%= link "Log in via Facebook", to: "/auth/facebook?state=#{@conn.request_path}" %></li>
           <% end %>
         </ol>
         <a href="/" class="header-brand">
