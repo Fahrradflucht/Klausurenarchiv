@@ -17,3 +17,12 @@ config :klausurenarchiv, Klausurenarchiv.Repo,
   database: "klausurenarchiv_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+# Ueberauth
+#   Override the callback_url cause of reverse proxying
+config :ueberauth, Ueberauth,
+  providers: [
+    facebook: {Ueberauth.Strategy.Facebook, [
+      profile_fields: "name, email, first_name, last_name"
+      ]}
+  ]
