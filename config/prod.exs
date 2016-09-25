@@ -60,6 +60,10 @@ config :klausurenarchiv, Klausurenarchiv.Endpoint, server: true
 #
 config :klausurenarchiv, Klausurenarchiv.Endpoint, root: "."
 
+# Make sure that the application user owns that directory
+config :klausurenarchiv, :store,
+  path: "/data"
+
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
 import_config "prod.secret.exs"
