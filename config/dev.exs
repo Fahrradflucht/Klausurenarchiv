@@ -49,3 +49,13 @@ config :klausurenarchiv, :store,
 # Set fb_ids of the users that should become admin on first login
 config :klausurenarchiv, :users,
   initial_admins: ["10205477885426354"]
+
+# Ueberauth
+#   Override the callback_url cause of reverse proxying
+config :ueberauth, Ueberauth,
+  providers: [
+    facebook: {Ueberauth.Strategy.Facebook, [
+      profile_fields: "name, email, first_name, last_name",
+      callback_url: "http://localhost:4000/auth/facebook/callback"
+      ]}
+  ]
