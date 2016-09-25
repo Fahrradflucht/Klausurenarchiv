@@ -19,6 +19,8 @@ defmodule Klausurenarchiv.Endpoint do
     plug Phoenix.CodeReloader
   end
 
+  plug Plug.Static, at: "/data" , from: Application.get_env(:klausurenarchiv, :store)[:path]
+
   plug Plug.RequestId
   plug Plug.Logger
 

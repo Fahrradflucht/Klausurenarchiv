@@ -14,15 +14,9 @@
     <tr>
       <td><%= upload.semester %></td>
       <td>
-        <%= for {file, index} <- Enum.with_index(upload.files) do %>
+        <%= for file <- upload.files do %>
           <%= link Path.basename(file),
-          to: course_instructor_upload_path(
-            @conn,
-            :show,
-            @course,
-            @instructor,
-            upload,
-            file: index)
+          to: upload_file_url(file)
           %><br>
         <% end %>
       </td>
