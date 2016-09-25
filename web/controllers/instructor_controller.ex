@@ -10,6 +10,7 @@ defmodule Klausurenarchiv.InstructorController do
     instructors = 
       conn.assigns[:course]
       |> assoc(:instructors)
+      |> order_by(asc: :name)
       |> Repo.all()
     render(conn, "index.html", instructors: instructors)
   end
