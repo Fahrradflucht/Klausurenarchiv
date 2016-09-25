@@ -64,6 +64,15 @@ config :klausurenarchiv, Klausurenarchiv.Endpoint, root: "."
 config :klausurenarchiv, :store,
   path: "/data"
 
+# Ueberauth
+#   Override the callback_url cause of reverse proxying
+config :ueberauth, Ueberauth,
+  providers: [
+    facebook: {Ueberauth.Strategy.Facebook, [
+      callback_url: "https://sozialoekonomie.klausurenarchiv.de/auth/facebook/callback"
+      ]}
+  ]
+
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
 import_config "prod.secret.exs"
