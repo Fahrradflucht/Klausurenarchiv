@@ -42,8 +42,10 @@ config :klausurenarchiv, Klausurenarchiv.Repo,
   hostname: "localhost",
   pool_size: 10
 
+# Set directory where to store uploads
 config :klausurenarchiv, :store,
   path: "/Users/Mathis/Desktop/Klausurenarchiv"
 
+# Set fb_ids of the users that should become admin on first login
 config :klausurenarchiv, :users,
   initial_admins: ["10205477885426354"]
