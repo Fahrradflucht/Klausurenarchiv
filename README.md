@@ -1,7 +1,7 @@
 # Klausurenarchiv
 A simple web app to share exams.
 
-## Setup
+## Config
 
 Set the path where uploads are stored in `config.exs`
 ```elixir
@@ -10,7 +10,7 @@ config :klausurenarchiv, :store,
 ```
 
 Set the list of facebook id's of the initial set of admins in `config.exs`.
-```
+```elixir
 config :klausurenarchiv, :users,
   initial_admins: ["12345678910111213"]
 ```
