@@ -3,7 +3,7 @@
 </div>
 
 <div class="row marketing">
-  <div class="col-lg-6">
+  <div class="col-sm-6">
     <h4>Facebook</h4>
     <ul>
       <li>
@@ -18,14 +18,14 @@
     </ul>
   </div>
 
-  <div class="col-lg-6">
+  <div class="col-sm-6">
     <h4>About</h4>
     <ul>
       <li>
-        <%= link "Impressum", to: page_path(@conn, :show, :impressum) %>
+        <a href="https://github.com/fahrradflucht/Klausurenarchiv/issues">Bugtracker</a>
       </li>
       <li>
-        <%= link "Datenschutz", to: page_path(@conn, :show, :datenschutz) %>
+        <a href="https://github.com/fahrradflucht/Klausurenarchiv">Source</a>
       </li>
     </ul>
   </div>
