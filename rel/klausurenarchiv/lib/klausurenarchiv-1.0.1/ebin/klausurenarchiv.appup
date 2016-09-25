@@ -1,0 +1,13 @@
+{"1.0.1",
+ [{"1.0.0",
+   [{load_module,'Elixir.Klausurenarchiv.AuthController'},
+    {load_module,'Elixir.Klausurenarchiv.Endpoint'},
+    {load_module,'Elixir.Klausurenarchiv.Gettext'},
+    {load_module,'Elixir.Klausurenarchiv.LayoutView'},
+    {load_module,'Elixir.Klausurenarchiv.PageView'}]}],
+ [{"1.0.0",
+   [{load_module,'Elixir.Klausurenarchiv.AuthController'},
+    {load_module,'Elixir.Klausurenarchiv.Endpoint'},
+    {load_module,'Elixir.Klausurenarchiv.Gettext'},
+    {load_module,'Elixir.Klausurenarchiv.LayoutView'},
+    {load_module,'Elixir.Klausurenarchiv.PageView'}]}]}.

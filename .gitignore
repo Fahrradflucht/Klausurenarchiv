@@ -26,6 +26,3 @@ erl_crash.dump
 # Editor files (feel free to submit yours)
 ## vscode
 /.vscode
-
-# Exclude exrm releases
-rel
