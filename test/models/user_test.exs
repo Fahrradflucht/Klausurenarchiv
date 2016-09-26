@@ -3,7 +3,12 @@ defmodule Klausurenarchiv.UserTest do
 
   alias Klausurenarchiv.User
 
-  @valid_attrs %{email: "some content", fb_id: "some content", first_name: "some content", last_name: "some content", name: "some content"}
+  @valid_attrs %{
+    email: "mail@example.com",
+    fb_id: "12345678910111213",
+    first_name: "Rita",
+    last_name: "Skeeter",
+    name: "Rita Skeeter"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
