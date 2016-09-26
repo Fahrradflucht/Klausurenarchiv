@@ -3,8 +3,8 @@ defmodule Klausurenarchiv.CourseTest do
 
   alias Klausurenarchiv.Course
 
-  @valid_attrs %{name: "some content"}
-  @invalid_attrs %{}
+  @valid_attrs %{name: "Finanzierung 1"}
+  @invalid_attrs %{name: nil}
 
   test "changeset with valid attributes" do
     changeset = Course.changeset(%Course{}, @valid_attrs)
