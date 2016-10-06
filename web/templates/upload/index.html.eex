@@ -12,7 +12,7 @@
   <tbody>
 <%= for upload <- @uploads do %>
     <tr>
-      <td><%= upload.semester %></td>
+      <td><%= upload.semester %> <%= if upload.is_resit, do: "(Zweittermin)" %></td>
       <td>
         <%= for file <- upload.files do %>
           <%= link Path.basename(file),
