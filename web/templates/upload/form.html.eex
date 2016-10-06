@@ -17,6 +17,13 @@
     </div>
     <%= error_tag f, :semester %>
   </div>
+  
+  <div class="checkbox">
+    <label>
+      <%= checkbox f, :is_resit %> Zweittermin
+    </label>
+    <%= error_tag f, :is_resit %>
+  </div>
 
   <div class="form-group">
     <label class= "control-label">Dateien</label>
