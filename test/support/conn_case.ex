@@ -26,6 +26,7 @@ defmodule Klausurenarchiv.ConnCase do
       import Ecto.Query
 
       import Klausurenarchiv.Router.Helpers
+      import Klausurenarchiv.TestHelpers
 
       # The default endpoint for testing
       @endpoint Klausurenarchiv.Endpoint
