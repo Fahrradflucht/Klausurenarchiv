@@ -7,7 +7,7 @@ defmodule Klausurenarchiv.InstructorViewTest do
   alias Klausurenarchiv.Course
   
   test "index.html contains new instructor link" do
-    course = %Course{name: "Herbology"}
+    course = %Course{id: 1, name: "Herbology"}
     assert render_to_string(
         InstructorView,
         "index.html",
