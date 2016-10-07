@@ -1,76 +1,120 @@
 defmodule Klausurenarchiv.InstructorControllerTest do
   use Klausurenarchiv.ConnCase
 
-  # alias Klausurenarchiv.Instructor
-  @valid_attrs %{name: "some content"}
-  @invalid_attrs %{}
+  alias Klausurenarchiv.Instructor
+  alias Klausurenarchiv.Course
+  @valid_attrs %{name: "Sprout"}
+  @invalid_attrs %{name: nil}
 
-  # @tag :skip
-  # test "lists all entries on index", %{conn: conn} do
-  #   conn = get conn, instructor_path(conn, :index)
-  #   assert html_response(conn, 200) =~ "Listing instructors"
-  # end
+  setup %{conn: conn} = config do
+    cond do
+      name = config[:login_as] ->
+        user = insert_user(name: name)
+        conn = assign(conn, :current_user, user)
+        {:ok, conn: conn, user: user}
+      name = config[:login_as_admin] ->
+        user = insert_user(%{name: name, is_admin: true})
+        conn = assign(conn, :current_user, user)
+        {:ok, conn: conn, user: user}
+      true ->
+        :ok
+    end
+  end
 
-  # @tag :skip
-  # test "renders form for new resources", %{conn: conn} do
-  #   conn = get conn, instructor_path(conn, :new)
-  #   assert html_response(conn, 200) =~ "New instructor"
-  # end
+  test "list all instructors of a given course alphabetically on index", %{conn: conn} do
+    course = Repo.insert! %Course{name: "Test Course"}
+    instructor_a = Repo.insert! %Instructor{name: "A Instructor", course: course}
+    instructor_z = Repo.insert! %Instructor{name: "Z Instructor", course: course}
+    instructor_m = Repo.insert! %Instructor{name: "M Instructor", course: course}
+    
+    conn = get conn, course_instructor_path(conn, :index, course)
+    assert html_response(conn, 200) =~
+      ~r/Lehrende für #{course.name}.*#{instructor_a.name}.*#{instructor_m.name}.*#{instructor_z.name}/s
+  end
 
-  # @tag :skip
-  # test "creates resource and redirects when data is valid", %{conn: conn} do
-  #   conn = post conn, instructor_path(conn, :create), instructor: @valid_attrs
-  #   assert redirected_to(conn) == instructor_path(conn, :index)
-  #   assert Repo.get_by(Instructor, @valid_attrs)
-  # end
+  test ":new, :create, :edit, :update, :delete require auth", %{conn: conn} do
+    course = Repo.insert! %Course{name: "Herbology"}
+    
+    Enum.each([
+      get(conn, course_instructor_path(conn, :new, course)),
+      post(conn, course_instructor_path(conn, :create, course, %{})),
+      get(conn, course_instructor_path(conn, :edit, course, "1")),
+      put(conn, course_instructor_path(conn, :update, course, "1", %{})),
+      delete(conn, course_instructor_path(conn, :delete, course, "1")),
+    ], fn conn ->
+      assert html_response(conn, 302)
+      assert conn.halted
+    end)
+  end
 
-  # @tag :skip
-  # test "does not create resource and renders errors when data is invalid", %{conn: conn} do
-  #   conn = post conn, instructor_path(conn, :create), instructor: @invalid_attrs
-  #   assert html_response(conn, 200) =~ "New instructor"
-  # end
+  @tag login_as: "Hannah Abbott"
+  test "renders new instructor form", %{conn: conn} do
+    course = Repo.insert! %Course{name: "Herbology"}
+    conn = get conn, course_instructor_path(conn, :new, course)
+    assert html_response(conn, 200) =~ "Neue*r Lehrende*r"
+  end
 
-  # @tag :skip
-  # test "shows chosen resource", %{conn: conn} do
-  #   instructor = Repo.insert! %Instructor{}
-  #   conn = get conn, instructor_path(conn, :show, instructor)
-  #   assert html_response(conn, 200) =~ "Show instructor"
-  # end
+  @tag login_as: "Hannah Abbott"
+  test "creates instructor and redirects when data is valid", %{conn: conn} do
+    course = Repo.insert! %Course{name: "Herbology"}
 
-  # @tag :skip
-  # test "renders page not found when id is nonexistent", %{conn: conn} do
-  #   assert_error_sent 404, fn ->
-  #     get conn, instructor_path(conn, :show, -1)
-  #   end
-  # end
+    conn = post conn, course_instructor_path(conn, :create, course), instructor: @valid_attrs
+    assert redirected_to(conn) == course_instructor_path(conn, :index, course)
+    assert Repo.get_by(Instructor, @valid_attrs)
+  end
 
-  # @tag :skip
-  # test "renders form for editing chosen resource", %{conn: conn} do
-  #   instructor = Repo.insert! %Instructor{}
-  #   conn = get conn, instructor_path(conn, :edit, instructor)
-  #   assert html_response(conn, 200) =~ "Edit instructor"
-  # end
+  @tag login_as: "Hannah Abbott"
+  test "does not create instructor and renders errors when data is invalid", %{conn: conn} do
+    course = Repo.insert! %Course{name: "Herbology"}
+    
+    conn =
+      post conn, course_instructor_path(conn, :create, course), instructor: @invalid_attrs
+    assert html_response(conn, 200) =~ ~r/Neue\*r Lehrende\*r.*can.*t be blank/s
+  end
 
-  # @tag :skip
-  # test "updates chosen resource and redirects when data is valid", %{conn: conn} do
-  #   instructor = Repo.insert! %Instructor{}
-  #   conn = put conn, instructor_path(conn, :update, instructor), instructor: @valid_attrs
-  #   assert redirected_to(conn) == instructor_path(conn, :show, instructor)
-  #   assert Repo.get_by(Instructor, @valid_attrs)
-  # end
+  @tag login_as: "Hannah Abbott"
+  test "renders form for editing chosen instructor", %{conn: conn} do
+    course = Repo.insert! %Course{name: "Herbology"}
+    instructor = Repo.insert! %Instructor{name: "Sprout"}
 
-  # @tag :skip
-  # test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
-  #   instructor = Repo.insert! %Instructor{}
-  #   conn = put conn, instructor_path(conn, :update, instructor), instructor: @invalid_attrs
-  #   assert html_response(conn, 200) =~ "Edit instructor"
-  # end
+    conn = get conn, course_instructor_path(conn, :edit, course, instructor)
+    assert html_response(conn, 200) =~ "Lehrende*n bearbeiten"
+  end
 
-  # @tag :skip
-  # test "deletes chosen resource", %{conn: conn} do
-  #   instructor = Repo.insert! %Instructor{}
-  #   conn = delete conn, instructor_path(conn, :delete, instructor)
-  #   assert redirected_to(conn) == instructor_path(conn, :index)
-  #   refute Repo.get(Instructor, instructor.id)
-  # end
+  @tag login_as: "Hannah Abbott"
+  test "updates chosen instructor and redirects when data is valid", %{conn: conn} do
+    course = Repo.insert! %Course{name: "Herbology"}
+    instructor = Repo.insert! %Instructor{name: "Beery"}
+
+    conn = put conn, course_instructor_path(conn, :update, course, instructor), instructor: @valid_attrs
+    assert redirected_to(conn) == course_instructor_path(conn, :index, course)
+    assert Repo.get_by(Instructor, @valid_attrs)
+  end
+
+  @tag login_as: "Hannah Abbott"
+  test "does not update chosen instructor and renders errors when data is invalid", %{conn: conn} do
+    course = Repo.insert! %Course{name: "Herbology"}
+    instructor = Repo.insert! %Instructor{name: "Beery"}
+
+    conn = put conn, course_instructor_path(conn, :update, course, instructor), instructor: @invalid_attrs
+    assert html_response(conn, 200) =~ "Lehrende*n bearbeiten"
+  end
+
+  @tag login_as: "Hannah Abbott"
+  test "delete requires admin rights", %{conn: conn} do
+    conn = delete conn, course_instructor_path(conn, :delete, "1", "1")
+
+    assert redirected_to(conn) == "/"
+    assert conn.halted
+  end
+
+  @tag login_as_admin: "Severus Snape"
+  test "deletes existing instructor", %{conn: conn} do
+    course = Repo.insert! %Course{name: "Herbology"}
+    instructor = Repo.insert! %Instructor{name: "Beery"}
+    
+    conn = delete conn, course_instructor_path(conn, :delete, course, instructor)
+    assert redirected_to(conn) == course_instructor_path(conn, :index, course)
+    refute Repo.get(Instructor, instructor.id)
+  end
 end
