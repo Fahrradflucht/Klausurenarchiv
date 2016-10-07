@@ -51,10 +51,10 @@ defmodule Klausurenarchiv.InstructorController do
     changeset = Instructor.changeset(instructor, instructor_params)
 
     case Repo.update(changeset) do
-      {:ok, instructor} ->
+      {:ok, _} ->
         conn
         |> put_flash(:info, "Instructor updated successfully.")
-        |> redirect(to: course_instructor_path(conn, :show, conn.assigns[:course], instructor))
+        |> redirect(to: course_instructor_path(conn, :index, conn.assigns[:course]))
       {:error, changeset} ->
         render(conn, "edit.html", instructor: instructor, changeset: changeset)
     end
