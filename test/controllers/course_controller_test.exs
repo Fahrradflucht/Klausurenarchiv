@@ -20,7 +20,7 @@ defmodule Klausurenarchiv.CourseControllerTest do
     end
   end
 
-  test "lists all entries alphabetically on index", %{conn: conn} do
+  test "lists all courses alphabetically on index", %{conn: conn} do
     course_m = Repo.insert! %Course{name: "M Testing"}
     course_z = Repo.insert! %Course{name: "Z Testing"}
     course_a = Repo.insert! %Course{name: "A Testing"}
@@ -44,35 +44,35 @@ defmodule Klausurenarchiv.CourseControllerTest do
     end)
   end
 
-  @tag login_as: "Rita Skeeter"
+  @tag login_as: "Ernie Macmillan"
   test "renders new course form", %{conn: conn} do
     conn = get conn, course_path(conn, :new)
 
     assert html_response(conn, 200) =~ "Neuer Kurs"
   end
   
-  @tag login_as: "Rita Skeeter"
+  @tag login_as: "Ernie Macmillan"
   test "creates course and redirects when data is valid", %{conn: conn} do
     conn = post conn, course_path(conn, :create), course: @valid_attrs
     assert redirected_to(conn) == course_path(conn, :index)
     assert Repo.get_by(Course, @valid_attrs)
   end
 
-  @tag login_as: "Rita Skeeter"
+  @tag login_as: "Ernie Macmillan"
   test "does not create course and renders errors when data is invalid", %{conn: conn} do
     conn = post conn, course_path(conn, :create), course: @invalid_attrs
     assert html_response(conn, 200) =~
       ~r/Neuer Kurs.*can.*t be blank/s
   end
 
-  @tag login_as: "Rita Skeeter"
+  @tag login_as: "Ernie Macmillan"
   test "renders form for editing chosen course", %{conn: conn} do
     course = Repo.insert! %Course{name: "Testing 101"}
     conn = get conn, course_path(conn, :edit, course)
     assert html_response(conn, 200) =~ "#{course.name} bearbeiten"
   end
 
-  @tag login_as: "Rita Skeeter"
+  @tag login_as: "Ernie Macmillan"
   test "updates chosen course and redirects when data is valid", %{conn: conn} do
     course = Repo.insert! %Course{name: "Testing"}
     conn = put conn, course_path(conn, :update, course), course: @valid_attrs
@@ -80,14 +80,14 @@ defmodule Klausurenarchiv.CourseControllerTest do
     assert Repo.get_by(Course, @valid_attrs)
   end
 
-  @tag login_as: "Rita Skeeter"
+  @tag login_as: "Ernie Macmillan"
   test "does not update chosen course and renders errors when data is invalid", %{conn: conn} do
     course = Repo.insert! %Course{name: "Testing"}
     conn = put conn, course_path(conn, :update, course), course: @invalid_attrs
     assert html_response(conn, 200) =~ "#{course.name} bearbeiten"
   end
 
-  @tag login_as: "Rita Skeeter"
+  @tag login_as: "Ernie Macmillan"
   test "delete requires admin rights", %{conn: conn} do
     conn = delete conn, course_path(conn, :delete, "1")
 
