@@ -1,4 +1,4 @@
-<h2>Neue*n Lehrende*n</h2>
+<h2>Neue*r Lehrende*r</h2>
 
 <%= render "form.html", changeset: @changeset,
                         action: course_instructor_path(@conn, :create, @course) %>

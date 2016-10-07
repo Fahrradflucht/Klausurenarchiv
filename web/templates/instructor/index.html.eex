@@ -33,6 +33,6 @@
     <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span> Zurück
   <% end %>
   <%= link to: course_instructor_path(@conn, :new, @course), class: "col-xs-6 text-right" do %>
-    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Neue*n Lehrende*n
+    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Neue*r Lehrende*r
   <% end %>
 </div>
