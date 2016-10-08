@@ -27,7 +27,7 @@
 
   <div class="form-group">
     <label class= "control-label">Dateien</label>
-    <%= file_input f, :files, multiple: true, name: "upload[files][]"%>
+    <%= file_input f, :files, multiple: true%>
     <%= error_tag f, :files %>
   </div>
 
