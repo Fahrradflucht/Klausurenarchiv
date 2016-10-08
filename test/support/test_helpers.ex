@@ -1,6 +1,8 @@
 defmodule Klausurenarchiv.TestHelpers do
     alias Klausurenarchiv.Repo
     
+    import Plug.Conn, only: [assign: 3]
+
     def insert_user(attrs \\ %{}) do
         changes = Dict.merge(%{
             email: "mail@example.com",
@@ -14,6 +16,21 @@ defmodule Klausurenarchiv.TestHelpers do
         %Klausurenarchiv.User{}
         |> Klausurenarchiv.User.changeset(changes)
         |> Repo.insert!
+    end
+    
+    def setup_login(%{conn: conn} = config) do
+        cond do
+        name = config[:login_as] ->
+            user = insert_user(name: name)
+            conn = assign(conn, :current_user, user)
+            {:ok, conn: conn, user: user}
+        name = config[:login_as_admin] ->
+            user = insert_user(%{name: name, is_admin: true})
+            conn = assign(conn, :current_user, user)
+            {:ok, conn: conn, user: user}
+        true ->
+            :ok
+        end
     end
     
 end

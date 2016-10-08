@@ -1,25 +1,12 @@
 defmodule Klausurenarchiv.InstructorControllerTest do
   use Klausurenarchiv.ConnCase
-
+  
   alias Klausurenarchiv.Instructor
   alias Klausurenarchiv.Course
   @valid_attrs %{name: "Sprout"}
   @invalid_attrs %{name: nil}
 
-  setup %{conn: conn} = config do
-    cond do
-      name = config[:login_as] ->
-        user = insert_user(name: name)
-        conn = assign(conn, :current_user, user)
-        {:ok, conn: conn, user: user}
-      name = config[:login_as_admin] ->
-        user = insert_user(%{name: name, is_admin: true})
-        conn = assign(conn, :current_user, user)
-        {:ok, conn: conn, user: user}
-      true ->
-        :ok
-    end
-  end
+  setup :setup_login
 
   test "list all instructors of a given course alphabetically on index", %{conn: conn} do
     course = Repo.insert! %Course{name: "Test Course"}

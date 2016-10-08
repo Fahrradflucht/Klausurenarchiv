@@ -5,20 +5,7 @@ defmodule Klausurenarchiv.CourseControllerTest do
   @valid_attrs %{name: "Testing 101"}
   @invalid_attrs %{name: nil}
   
-  setup %{conn: conn} = config do
-    cond do
-      name = config[:login_as] ->
-        user = insert_user(name: name)
-        conn = assign(conn, :current_user, user)
-        {:ok, conn: conn, user: user}
-      name = config[:login_as_admin] ->
-        user = insert_user(%{name: name, is_admin: true})
-        conn = assign(conn, :current_user, user)
-        {:ok, conn: conn, user: user}
-      true ->
-        :ok
-    end
-  end
+  setup :setup_login
 
   test "lists all courses alphabetically on index", %{conn: conn} do
     course_m = Repo.insert! %Course{name: "M Testing"}
