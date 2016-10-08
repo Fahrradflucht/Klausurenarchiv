@@ -55,6 +55,38 @@ defmodule Klausurenarchiv.UploadControllerTest do
   end
 
   @tag login_as: "Lavender Brown"
+  test "upload creation saves file to storage path", %{conn: conn, user: user} do
+    # Setup
+    course = Repo.insert! %Course{name: "History of Magic"}
+    instructor = Repo.insert! %Instructor{name: "Binns", course: course}
+
+    unless File.exists?("test/fixtures/file1.pdf") do
+      File.mkdir_p!("test/fixtures")
+      File.write!("test/fixtures/file1.pdf", <<0::240_000_000>>)
+    end
+
+    file1 = %Plug.Upload{path: "test/fixtures/file1.pdf", filename: "file1.pdf"}
+
+    # Test
+    post conn, course_instructor_upload_path(conn, :create, course, instructor),
+     upload: %{semester_kind: "SoSe", semester_year: "13", files: [file1]}
+
+    upload = Repo.get_by(Upload, %{
+      semester: "SoSe 13",
+      user_id: user.id,
+      instructor_id: instructor.id
+    }) 
+    
+    file_path = hd upload.files
+    
+    assert String.starts_with? file_path, Application.get_env(:klausurenarchiv, :store)[:path]
+    assert File.exists? file_path
+    
+    # Teardown
+    File.rm_rf!("test/tmp")
+  end
+
+  @tag login_as: "Lavender Brown"
   test "does not create upload and renders errors when data is invalid", %{conn: conn} do
     course = Repo.insert! %Course{name: "History of Magic"}
     instructor = Repo.insert! %Instructor{name: "Binns", course: course}

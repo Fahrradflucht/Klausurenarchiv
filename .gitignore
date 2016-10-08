@@ -27,5 +27,8 @@ erl_crash.dump
 ## vscode
 /.vscode
 
+# Fixtures
+/test/fixtures/file1.pdf
+
 # Exclude exrm releases
 rel

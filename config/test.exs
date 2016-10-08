@@ -26,3 +26,6 @@ config :ueberauth, Ueberauth,
       profile_fields: "name, email, first_name, last_name"
       ]}
   ]
+  
+config :klausurenarchiv, :store,
+  path: File.cwd! <> "/test/tmp"
