@@ -56,17 +56,6 @@ defmodule Klausurenarchiv.UploadController do
     end
   end
 
-  def show(conn, %{"id" => id, "file" => index_string}) do
-    {index, _} = Integer.parse index_string
-
-    upload = Repo.get!(Upload, id)
-    file =
-      upload.files
-      |> Enum.at(index)
-
-    Plug.Conn.send_file(conn, 200, file)
-  end
-
   def edit(conn, %{"id" => id}) do
     upload = Repo.get!(Upload, id)
     changeset = Upload.changeset(upload)
@@ -121,6 +110,7 @@ defmodule Klausurenarchiv.UploadController do
         conn.assigns[:course],
         conn.assigns[:instructor]
         ))
+      |> halt()
     end
   end
 
