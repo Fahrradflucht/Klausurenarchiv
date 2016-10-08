@@ -45,13 +45,13 @@ defmodule Klausurenarchiv.UploadControllerTest do
   end
 
   @tag login_as: "Lavender Brown"
-  test "creates upload and redirects when data is valid", %{conn: conn} do
+  test "creates upload and redirects when data is valid", %{conn: conn, user: user} do
     course = Repo.insert! %Course{name: "History of Magic"}
     instructor = Repo.insert! %Instructor{name: "Binns", course: course}
     
     conn = post conn, course_instructor_upload_path(conn, :create, course, instructor), upload: @valid_attrs
     assert redirected_to(conn) == course_instructor_upload_path(conn, :index, course, instructor)
-    assert Repo.get_by(Upload, %{semester: "SoSe 13", files: []})
+    assert Repo.get_by(Upload, %{user_id: user.id, files: [], semester: "SoSe 13"})
   end
 
   @tag login_as: "Lavender Brown"
