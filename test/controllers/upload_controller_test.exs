@@ -1,76 +1,104 @@
 defmodule Klausurenarchiv.UploadControllerTest do
   use Klausurenarchiv.ConnCase
 
-  # alias Klausurenarchiv.Upload
-  @valid_attrs %{description: "some content", files: []}
-  @invalid_attrs %{}
+  alias Klausurenarchiv.{Course, Instructor, Upload}
+  
+  @valid_attrs %{semester_kind: "SoSe", semester_year: "13", files: []}
+  @invalid_attrs %{files: nil, semester_kind: nil, semester_year: "13"}
+  
+  setup :setup_login
 
-  # @tag :skip
-  # test "lists all entries on index", %{conn: conn} do
-  #   conn = get conn, upload_path(conn, :index)
-  #   assert html_response(conn, 200) =~ "Listing uploads"
-  # end
+  test "lists all uploads of the given course instructor sorted by semester on index", %{conn: conn} do
+    course = Repo.insert! %Course{name: "History of Magic"}
+    instructor = Repo.insert! %Instructor{name: "Binns", course: course}
+    
+    u_sose13 = Repo.insert! %Upload{semester: "SoSe 13", files: [], instructor: instructor}
+    u_wise13_14 = Repo.insert! %Upload{semester: "WiSe 13/14", files: [], instructor: instructor}
+    u_wise12_13 = Repo.insert! %Upload{semester: "Wise 12/13", files: [], instructor: instructor}
 
-  # @tag :skip
-  # test "renders form for new resources", %{conn: conn} do
-  #   conn = get conn, upload_path(conn, :new)
-  #   assert html_response(conn, 200) =~ "New upload"
-  # end
+    conn = get conn, course_instructor_upload_path(conn, :index, course, instructor)
+    assert html_response(conn, 200) =~ "Klausuren für #{course.name} - #{instructor.name}"
+    assert html_response(conn, 200) =~ ~r/#{u_wise12_13.semester}.*#{u_sose13.semester}.*#{u_wise13_14.semester}/s
+  end
+  
+  test ":new, :create, and :delete require auth", %{conn: conn} do
+    course = Repo.insert! %Course{name: "History of Magic"}
+    instructor = Repo.insert! %Instructor{name: "Binns", course: course}
+    
+    Enum.each([
+      get(conn, course_instructor_upload_path(conn, :new, course, instructor)),
+      post(conn, course_instructor_upload_path(conn, :create, course, instructor, %{})),
+      delete(conn, course_instructor_upload_path(conn, :delete, course, instructor, "1")),
+    ], fn conn ->
+      assert html_response(conn, 302)
+      assert conn.halted
+    end)
+  end
 
-  # @tag :skip
-  # test "creates resource and redirects when data is valid", %{conn: conn} do
-  #   conn = post conn, upload_path(conn, :create), upload: @valid_attrs
-  #   assert redirected_to(conn) == upload_path(conn, :index)
-  #   assert Repo.get_by(Upload, @valid_attrs)
-  # end
+  @tag login_as: "Lavender Brown"
+  test "renders form for new resources", %{conn: conn} do
+    course = Repo.insert! %Course{name: "History of Magic"}
+    instructor = Repo.insert! %Instructor{name: "Binns", course: course}
+    
+    conn = get conn, course_instructor_upload_path(conn, :new, course, instructor)
+    assert html_response(conn, 200) =~ "Neue Klausur"
+  end
 
-  # @tag :skip
-  # test "does not create resource and renders errors when data is invalid", %{conn: conn} do
-  #   conn = post conn, upload_path(conn, :create), upload: @invalid_attrs
-  #   assert html_response(conn, 200) =~ "New upload"
-  # end
+  @tag login_as: "Lavender Brown"
+  test "creates upload and redirects when data is valid", %{conn: conn} do
+    course = Repo.insert! %Course{name: "History of Magic"}
+    instructor = Repo.insert! %Instructor{name: "Binns", course: course}
+    
+    conn = post conn, course_instructor_upload_path(conn, :create, course, instructor), upload: @valid_attrs
+    assert redirected_to(conn) == course_instructor_upload_path(conn, :index, course, instructor)
+    assert Repo.get_by(Upload, %{semester: "SoSe 13", files: []})
+  end
 
-  # @tag :skip
-  # test "shows chosen resource", %{conn: conn} do
-  #   upload = Repo.insert! %Upload{}
-  #   conn = get conn, upload_path(conn, :show, upload)
-  #   assert html_response(conn, 200) =~ "Show upload"
-  # end
+  @tag login_as: "Lavender Brown"
+  test "does not create upload and renders errors when data is invalid", %{conn: conn} do
+    course = Repo.insert! %Course{name: "History of Magic"}
+    instructor = Repo.insert! %Instructor{name: "Binns", course: course}
+    
+    conn = post conn, course_instructor_upload_path(conn, :create, course, instructor), upload: @invalid_attrs
+    assert html_response(conn, 200) =~ "Neue Klausur"
+  end
 
-  # @tag :skip
-  # test "renders page not found when id is nonexistent", %{conn: conn} do
-  #   assert_error_sent 404, fn ->
-  #     get conn, upload_path(conn, :show, -1)
-  #   end
-  # end
+  @tag login_as: "Lavender Brown"
+  test "delete requires ownership or admin rights", %{conn: conn} do
+    course = Repo.insert! %Course{name: "History of Magic"}
+    instructor = Repo.insert! %Instructor{name: "Binns", course: course}
+    
+    user = insert_user(name: "Marcus Belby")
+    upload = Repo.insert! %Upload{semester: "WiSe 12/13", files: [], instructor: instructor, user: user}
+    
+    conn = delete conn, course_instructor_upload_path(conn, :delete, course, instructor, upload)
+    assert redirected_to(conn) == course_instructor_upload_path(conn, :index, course, instructor)
+    assert conn.halted
+    assert Repo.get(Upload, upload.id)
+  end
 
-  # @tag :skip
-  # test "renders form for editing chosen resource", %{conn: conn} do
-  #   upload = Repo.insert! %Upload{}
-  #   conn = get conn, upload_path(conn, :edit, upload)
-  #   assert html_response(conn, 200) =~ "Edit upload"
-  # end
+  @tag login_as: "Lavender Brown"
+  test "delete existing upload as owner", %{conn: conn, user: user} do
+    course = Repo.insert! %Course{name: "History of Magic"}
+    instructor = Repo.insert! %Instructor{name: "Binns", course: course}
 
-  # @tag :skip
-  # test "updates chosen resource and redirects when data is valid", %{conn: conn} do
-  #   upload = Repo.insert! %Upload{}
-  #   conn = put conn, upload_path(conn, :update, upload), upload: @valid_attrs
-  #   assert redirected_to(conn) == upload_path(conn, :show, upload)
-  #   assert Repo.get_by(Upload, @valid_attrs)
-  # end
+    upload = Repo.insert! %Upload{semester: "WiSe 12/13", files: [], instructor: instructor, user: user}
+    
+    conn = delete conn, course_instructor_upload_path(conn, :delete, course, instructor, upload)
+    assert redirected_to(conn) == course_instructor_upload_path(conn, :index, course, instructor)
+    refute Repo.get(Upload, upload.id)
+  end
+  
+  @tag login_as_admin: "Albus Dumbledore"
+  test "delete existing upload as admin", %{conn: conn} do
+    course = Repo.insert! %Course{name: "History of Magic"}
+    instructor = Repo.insert! %Instructor{name: "Binns", course: course}
 
-  # @tag :skip
-  # test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
-  #   upload = Repo.insert! %Upload{}
-  #   conn = put conn, upload_path(conn, :update, upload), upload: @invalid_attrs
-  #   assert html_response(conn, 200) =~ "Edit upload"
-  # end
-
-  # @tag :skip
-  # test "deletes chosen resource", %{conn: conn} do
-  #   upload = Repo.insert! %Upload{}
-  #   conn = delete conn, upload_path(conn, :delete, upload)
-  #   assert redirected_to(conn) == upload_path(conn, :index)
-  #   refute Repo.get(Upload, upload.id)
-  # end
+    user = insert_user(name: "Marcus Belby")
+    upload = Repo.insert! %Upload{semester: "WiSe 12/13", files: [], instructor: instructor, user: user}
+    
+    conn = delete conn, course_instructor_upload_path(conn, :delete, course, instructor, upload)
+    assert redirected_to(conn) == course_instructor_upload_path(conn, :index, course, instructor)
+    refute Repo.get(Upload, upload.id)
+  end
 end
