@@ -5,7 +5,7 @@ defmodule Klausurenarchiv.UploadView do
     rel_path = Path.relative_to(
       file, Application.get_env(:klausurenarchiv, :store)[:path])
 
-    "/data/#{rel_path}"
+    URI.encode("/data/#{rel_path}")
   end
 
   def year_list do
