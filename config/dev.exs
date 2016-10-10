@@ -39,7 +39,7 @@ config :klausurenarchiv, Klausurenarchiv.Repo,
   username: "postgres",
   password: "postgres",
   database: "klausurenarchiv_dev",
-  hostname: "localhost",
+  hostname: System.get_env("KLAUSURENARCHIV_DB_HOST") || "localhost",
   pool_size: 10
 
 # Set directory where to store uploads
