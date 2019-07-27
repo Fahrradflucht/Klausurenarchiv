@@ -15,7 +15,7 @@ config :klausurenarchiv, Klausurenarchiv.Repo,
   username: "postgres",
   password: System.get_env("KLAUSURENARCHIV_DB_PASS") || "postgres",
   database: "klausurenarchiv_test",
-  hostname: "localhost",
+  hostname: System.get_env("KLAUSURENARCHIV_DB_HOST") || "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
 # Ueberauth
