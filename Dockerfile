@@ -1,28 +1,18 @@
-FROM elixir:1.3.3
-ENV APP_HOME /klausurenarchiv
-RUN mkdir $APP_HOME
+FROM elixir:1.3
 
-RUN apt-get update -qq && apt-get install -y build-essential
+# Install debian packages
+RUN apt-get update
+RUN apt-get install --yes build-essential inotify-tools postgresql-client
 
-RUN apt-get install -y -q apt-utils
+# Install Phoenix packages
+RUN mix local.hex --force
+RUN mix local.rebar --force
+RUN mix archive.install --force https://github.com/phoenixframework/archives/raw/master/phx_new.ez
 
-RUN apt-get install -y -q inotify-tools
+# Install node
+RUN curl -sL https://deb.nodesource.com/setup_6.x -o nodesource_setup.sh
+RUN bash nodesource_setup.sh
+RUN apt-get install nodejs
 
-# PostgreSQL
-RUN apt-get install -y libpq-dev
-
-# Install the Phoenix framework itself
-RUN mix archive.install --force https://github.com/phoenixframework/archives/raw/master/phoenix_new.ez
-
-# Set directory for our app
-WORKDIR $APP_HOME
-COPY mix.exs mix.lock $APP_HOME/
-
-# Install hex
-RUN mix local.hex --force && \
-    mix local.rebar --force && \
-    mix deps.clean --all && \
-    mix deps.get
-
-# Copy code
-ADD . $APP_HOME
+WORKDIR /app
+EXPOSE 4000

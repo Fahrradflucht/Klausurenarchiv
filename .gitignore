@@ -2,6 +2,7 @@
 /_build
 /db
 /deps
+rel
 /*.ez
 
 # Generated on crash by the VM
@@ -27,8 +28,8 @@ erl_crash.dump
 ## vscode
 /.vscode
 
+## IntelliJ
+/.idea
+
 # Fixtures
 /test/fixtures/file1.pdf
-
-# Exclude exrm releases
-rel

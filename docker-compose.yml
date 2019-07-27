@@ -1,0 +1,21 @@
+version: '3'
+services:
+  app:
+    build: .
+    volumes:
+      - ".:/app"
+    ports:
+      - "4000:4000"
+    links:
+      - db
+    environment:
+      KLAUSURENARCHIV_DB_HOST: db
+    command:
+      - make
+      - start
+  db:
+    image: postgres:9.4-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: klausurenarchiv_dev
