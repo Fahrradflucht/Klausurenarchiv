@@ -1,0 +1,10 @@
+version: 2
+jobs:
+  build:
+    steps:
+      - checkout
+      - setup_remote_docker
+
+      - run:
+          name: Test
+          command: make docker_test
