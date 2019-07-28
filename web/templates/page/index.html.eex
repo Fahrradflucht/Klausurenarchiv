@@ -1,5 +1,5 @@
 <div class="jumbotron">
-  <%= button "Klausuren", to: course_path(@conn, :index), method: "get", class: "btn btn-primary" %>
+  <%= link "Klausuren", to: course_path(@conn, :index), class: "btn btn-primary" %>
 </div>
 
 <div class="row marketing">

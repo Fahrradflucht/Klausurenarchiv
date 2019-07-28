@@ -4,7 +4,7 @@ defmodule Klausurenarchiv.Mixfile do
   def project do
     [app: :klausurenarchiv,
      version: "1.1.2",
-     elixir: "~> 1.3",
+     elixir: "~> 1.9",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix, :gettext] ++ Mix.compilers,
      build_embedded: Mix.env == :prod,
@@ -38,7 +38,7 @@ defmodule Klausurenarchiv.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
-     {:ueberauth_facebook, git: "https://github.com/ueberauth/ueberauth_facebook.git", ref: "2e3c118"},
+     {:ueberauth_facebook, "~> 0.8"},
      {:exrm, "~> 1.0"}]
   end
 

@@ -1,4 +1,4 @@
-FROM elixir:1.3
+FROM elixir:1.9
 
 # Install debian packages
 RUN apt-get update
